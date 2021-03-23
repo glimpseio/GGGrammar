@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BricBrac",
+        "repositoryURL": "https://github.com/glimpseio/BricBrac.git",
+        "state": {
+          "branch": "master",
+          "revision": "8104e9cce0a9d01c6d5ee8119e4abed6ef4f1007",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
