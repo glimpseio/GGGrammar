@@ -2,6 +2,9 @@
 import XCTest
 import Curio
 import BricBrac
+#if canImport(FoundationNetworking)
+import FoundationNetworking // needed for networking on Linux
+#endif
 
 final class GGSpecTests: XCTestCase {
     func testDecoding() {
