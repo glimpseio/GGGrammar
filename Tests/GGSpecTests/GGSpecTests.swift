@@ -1,4 +1,3 @@
-
 import XCTest
 import Curio
 import BricBrac
@@ -16,12 +15,14 @@ final class GGSpecTests: XCTestCase {
     }
 }
 
-#if os(Linux) || os(OSX) // or any OS that can run an NSTask…
+#if os(Linux) || os(macOS) // or any OS that can run an NSTask…
 
-let codeDir = (((#file as NSString)
-                    .deletingLastPathComponent as NSString)
-                .deletingLastPathComponent as NSString)
-    .appendingPathComponent(GGSchemaGenerator.moduleName)
+let codeDir = URL(fileURLWithPath: #file)
+    .deletingLastPathComponent() // Tests/GGSpecTests/
+    .deletingLastPathComponent() // Tests/
+    .deletingLastPathComponent() // .
+    .appendingPathComponent("Sources") // Sources/
+    .appendingPathComponent("GGSpec") // Sources/GGSpec/
 
 final class GGSchemaGenerator: XCTestCase {
     static let rootName = "GGSchema"
@@ -29,7 +30,6 @@ final class GGSchemaGenerator: XCTestCase {
 
     /// Download the latest schema
     func testGGSchemaGeneration() throws {
-        throw XCTSkip("need to re-implement schema generation")
         try generateGGSchema()
     }
 }
@@ -60,8 +60,9 @@ private extension GGSchemaGenerator {
         }
 
         let module = try curio.assemble(transformedSchema, rootName: nil)
-        module.imports.append("Foundation") // for Decimal
-        let _ = try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir, source: source)
+        module.imports.append("Foundation") // for UUID
+
+        let _ = try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
     }
 
     private func fixup(_ curio: inout Curio) {
