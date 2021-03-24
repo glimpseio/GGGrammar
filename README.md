@@ -1,6 +1,6 @@
 # GGSpec
 
-GGSpec contains a collection of `Codable` swift value types (structs an enums) generated from the Vega schema. 
+GGSpec contains a collection of `Codable` swift value types (structs and enums) generated from the Vega schema. 
 
 It enables reading, modifying, and writing JSON in the Vega grammar format with a type-safe Swift API.
 
