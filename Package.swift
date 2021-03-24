@@ -11,7 +11,7 @@ let package = Package(
             targets: ["GGSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/glimpseio/BricBrac.git", .branch("main")),
+        .package(url: "git@github.com:glimpseio/BricBrac.git", .branch("main")),
     ],
     targets: [
         .target(
