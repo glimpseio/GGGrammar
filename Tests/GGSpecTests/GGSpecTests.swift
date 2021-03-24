@@ -1,6 +1,8 @@
 import XCTest
 import Curio
 import BricBrac
+import GGSpec
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking // needed for networking on Linux
 #endif
@@ -8,6 +10,60 @@ import FoundationNetworking // needed for networking on Linux
 final class GGSpecTests: XCTestCase {
     func testDecoding() {
         XCTAssertEqual(["XYZ"], try Bric.parse("[\"XYZ\"]"))
+    }
+
+    func testExampleSpec() throws {
+        let specJSON = """
+        {
+            "mark": "bar",
+            "data": {
+                "values": [
+                    { "a": "CAT1", "b": 5.6 },
+                    { "a": "CAT2", "b": 0.1 }
+                ]
+            },
+            "encoding": {
+                "x": { "field": "a" },
+                "y": { "field": "b" }
+            }
+        }
+        """
+
+        // parse the GGSpec from the JSON literal…
+        let parsedSpec = try TopLevelUnitSpec.parseJSON(specJSON)
+
+        // …and also create the same spec in code
+        var codeSpec = TopLevelUnitSpec(data:
+            TopLevelUnitSpec.DataChoice(
+                DataProvider(
+                    DataSource(
+                        InlineData(values:
+                                    InlineDataset([
+                                        ["a": "CAT1", "b": 5.6],
+                                        ["a": "CAT2", "b": 0.1]
+                                    ])
+                        )
+                    )
+                )
+            ),
+            mark: AnyMark(.bar))
+
+        // initialize the encodings with a single `x` scaled to the `a` field…
+        codeSpec.encoding = FacetedEncoding(x:
+            FacetedEncoding.EncodingX(
+                FacetedEncoding.X(
+                    PositionFieldDef(field: .init(FieldName("a"))))))
+
+        // …then add a `y` encoding scaled to the `b` field
+        codeSpec.encoding!.y = FacetedEncoding.EncodingY(
+            FacetedEncoding.Y(
+                PositionFieldDef(field: .init(FieldName("b")))))
+
+        XCTAssertEqual("""
+        {"data":{"values":[{"a":"CAT1","b":5.5999999999999996},{"a":"CAT2","b":0.10000000000000001}]},"encoding":{"x":{"field":"a"},"y":{"field":"b"}},"mark":"bar"}
+        """, codeSpec.jsonDebugDescription) // *sigh* JSON
+
+        XCTAssertEqual(parsedSpec, codeSpec)
     }
 
     func testCurio() {
