@@ -60,7 +60,7 @@ private extension GGSchemaGenerator {
         }
 
         let module = try curio.assemble(transformedSchema, rootName: nil)
-        module.imports.append("Foundation") // for UUID
+        module.imports.append("struct Foundation.UUID") // for UUID
 
         let _ = try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
     }
