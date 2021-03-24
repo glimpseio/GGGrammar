@@ -64,6 +64,13 @@
 			remoteGlobalIDString = 7E28A5BB1B5AD5EE00A5F27F;
 			remoteInfo = Curio;
 		};
+		49B0666A260B5F7E00FB1415 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49086D3B260AFAD700DC5206 /* BricBrac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 7E7F9B1B1B3615850058706A;
+			remoteInfo = BricBrac;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -269,6 +276,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				49B0666B260B5F7E00FB1415 /* PBXTargetDependency */,
 			);
 			name = GGSpec;
 			productName = GGSpec;
@@ -388,6 +396,11 @@
 			isa = PBXTargetDependency;
 			name = Curio;
 			targetProxy = 49086D4F260AFAE200DC5206 /* PBXContainerItemProxy */;
+		};
+		49B0666B260B5F7E00FB1415 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BricBrac;
+			targetProxy = 49B0666A260B5F7E00FB1415 /* PBXContainerItemProxy */;
 		};
 		OBJ_105 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
