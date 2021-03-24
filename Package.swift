@@ -22,3 +22,4 @@ let package = Package(
             dependencies: ["GGSpec", .product(name: "Curio", package: "BricBrac")]),
     ]
 )
+
