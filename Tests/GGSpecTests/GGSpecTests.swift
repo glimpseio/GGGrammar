@@ -59,9 +59,17 @@ final class GGSpecTests: XCTestCase {
             FacetedEncoding.Y(
                 PositionFieldDef(field: .init(FieldName("b")))))
 
-        XCTAssertEqual("""
+        #if canImport(ObjectiveC) // *sigh* Apple
+        let expectedJSON = """
         {"data":{"values":[{"a":"CAT1","b":5.5999999999999996},{"a":"CAT2","b":0.10000000000000001}]},"encoding":{"x":{"field":"a"},"y":{"field":"b"}},"mark":"bar"}
-        """, codeSpec.jsonDebugDescription) // *sigh* JSON
+        """
+        #else // Linux FTW
+        let expectedJSON = """
+        {"data":{"values":[{"a":"CAT1","b":5.6},{"a":"CAT2","b":0.1}]},"encoding":{"x":{"field":"a"},"y":{"field":"b"}},"mark":"bar"}
+        """
+        #endif
+
+        XCTAssertEqual(expectedJSON, codeSpec.jsonDebugDescription)
 
         XCTAssertEqual(parsedSpec, codeSpec)
     }
