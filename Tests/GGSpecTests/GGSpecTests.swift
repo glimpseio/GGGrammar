@@ -25,11 +25,11 @@ let codeDir = (((#file as NSString)
 
 final class GGSchemaGenerator: XCTestCase {
     static let rootName = "GGSchema"
-    // static let moduleName = "GGGrammar"
-    static let moduleName = "VLModel"
+    static let moduleName = "GGGrammar"
 
     /// Download the latest schema
     func testGGSchemaGeneration() throws {
+        throw XCTSkip("need to re-implement schema generation")
         try generateGGSchema()
     }
 }
