@@ -146,6 +146,10 @@ private extension GGSchemaGenerator {
 
             // work around an ambigious type bug in the generator (there are two ConditionalPredicateValueDefStringNullExpr types generated otherwise)
             "#/definitions/ConditionalPredicate<ValueDef<(string|null|ExprRef)>>": "ConditionalPredicateValueDefStringNullExprReference",
+
+            "#/definitions/TimeInterval": "Duration", // `TimeInterval` conflicts with the Foundation type
+            //"#/definitions/Stream": "StreamChoice", // `Stream` conflicts with the Foundation type
+
         ]
 
         curio.renamer = { (parents, id) in
@@ -252,8 +256,12 @@ private extension GGSchemaGenerator {
             "Config.text",
             "Config.tick",
             "Config.trail",
-
+            
             "Config.selection",
+            "Config.projection",
+            "Config.range",
+            "Config.title",
+            "Config.view",
             "Config.scale",
             "Config.legend",
             "Config.facet",
