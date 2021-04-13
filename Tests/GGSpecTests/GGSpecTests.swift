@@ -75,7 +75,7 @@ final class GGSpecTests: XCTestCase {
     }
 
     func testCurio() {
-        let _ = Curio()
+        _ = Curio()
     }
 }
 
@@ -126,7 +126,7 @@ private extension GGSchemaGenerator {
         let module = try curio.assemble(transformedSchema, rootName: nil)
         module.imports.append("struct Foundation.UUID") // for UUID
 
-        let _ = try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
+        _ = try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
     }
 
     private func fixup(_ curio: inout Curio) {
