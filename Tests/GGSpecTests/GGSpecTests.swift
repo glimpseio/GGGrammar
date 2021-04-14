@@ -94,12 +94,12 @@ final class GGSchemaGenerator: XCTestCase {
 
     /// Download the latest schema
     func testGGSchemaGeneration() throws {
-        try generateGGSchema()
+        XCTAssertTrue(try generateGGSchema())
     }
 }
 
 private extension GGSchemaGenerator {
-    private func generateGGSchema(from url: URL = URL(string: "https://vega.github.io/schema/vega-lite/v5.json")!) throws {
+    private func generateGGSchema(from url: URL = URL(string: "https://vega.github.io/schema/vega-lite/v5.json")!) throws -> Bool {
         // download the latest schema and generate the GGSchema.swift
         let source = try String(contentsOf: url)
         let json = try JSONSchema.impute(source)
@@ -114,6 +114,8 @@ private extension GGSchemaGenerator {
 
         curio.indirectCountThreshold = 80 // Config has about 62 fields
 
+        curio.imports.append("struct Foundation.UUID") // for UUID
+
         fixup(&curio)
 
         let schemas: [(String, JSONSchema)] = try JSONSchema.generate(json, rootName: nil)
@@ -124,9 +126,8 @@ private extension GGSchemaGenerator {
         }
 
         let module = try curio.assemble(transformedSchema, rootName: nil)
-        module.imports.append("struct Foundation.UUID") // for UUID
 
-        _ = try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
+        return try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
     }
 
     private func fixup(_ curio: inout Curio) {
