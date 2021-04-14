@@ -111,10 +111,10 @@ private extension GGSchemaGenerator {
 
         curio.accessor = { _ in .`public` }
         curio.anyOfAsOneOf = true
+        //curio.imports.append("struct Foundation.UUID") // for UUID
 
         curio.indirectCountThreshold = 80 // Config has about 62 fields
 
-        curio.imports.append("struct Foundation.UUID") // for UUID
 
         fixup(&curio)
 
@@ -126,6 +126,7 @@ private extension GGSchemaGenerator {
         }
 
         let module = try curio.assemble(transformedSchema, rootName: nil)
+        module.imports.append("struct Foundation.UUID") // for UUID
 
         return try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
     }
