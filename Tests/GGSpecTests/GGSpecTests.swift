@@ -94,7 +94,7 @@ final class GGSchemaGenerator: XCTestCase {
 
     /// Download the latest schema
     func testGGSchemaGeneration() throws {
-        XCTAssertTrue(try generateGGSchema())
+        let _ = try generateGGSchema()
     }
 }
 
