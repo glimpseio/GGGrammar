@@ -17,7 +17,7 @@ The source of the generated schema is a single ~5M (~66K SLOC) [GGSchema.swift](
 
 The only dependency of this project is [BricBrac](https://github.com/glimpseio/BricBrac/), which is used for representing the `JSONSchema` types..
 
-The following unit test from [GGSpecTests.swift](https://github.com/glimpseio/GGSpec/blob/main/Sources/GGSpecTests/GGSpecTests.swift) illustrates the API & featues:
+The following unit test from [GGSpecTests.swift](https://github.com/glimpseio/GGSpec/blob/main/Tests/GGSpecTests/GGSpecTests.swift) illustrates the API & featues:
 
 ```swift 
 import GGSpec
