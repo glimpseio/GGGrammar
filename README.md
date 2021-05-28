@@ -1,5 +1,10 @@
 # GGSpec
 
+[![Build Status](https://github.com/glimpseio/GGSpec/workflows/GGSpec%20CI/badge.svg?branch=main)](https://github.com/glimpseio/GGSpec/actions)
+[![Swift Package Manager compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
+[![Platform](https://img.shields.io/badge/Platforms-macOS%20|%20iOS%20|%20Windows%20|%20tvOS%20|%20watchOS%20|%20Linux-lightgrey.svg)](https://github.com/glimpseio/GGSpec)
+[![](https://tokei.rs/b1/github/glimpseio/GGSpec)](https://github.com/glimpseio/GGSpec)
+
 GGSpec contains a collection of `Codable` swift value types (structs and enums) generated from the Vega schema. 
 
 It enables reading, modifying, and writing JSON in the Vega grammar format with a type-safe Swift API.
