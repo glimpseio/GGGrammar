@@ -1,4 +1,4 @@
-name: GSpec CI
+name: GGSpec CI
 
 on:
   push:
