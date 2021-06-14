@@ -137,6 +137,9 @@ private extension GGSchemaGenerator {
 
             "#/definitions/Type": "MeasureType", // `Type` is a reserved name in Swift
             "#/definitions/Mark": "PrimitiveMarkType", // `Mark` is too generic a name for the enum
+            "#/definitions/BoxPlot": "BoxPlotLiteral",
+            "#/definitions/ErrorBar": "ErrorBarLiteral",
+            "#/definitions/ErrorBand": "ErrorBandLiteral",
 
             "#/definitions/StandardType": "StandardMeasureType", // new in vl 3.0.0RC11
             "#/definitions/Data": "DataProvider", // `Data` conflicts with Swift's built-in Data type
