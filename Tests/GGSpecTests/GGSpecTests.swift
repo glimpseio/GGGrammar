@@ -136,6 +136,8 @@ private extension GGSchemaGenerator {
             "#/definitions/MarkType": "VgMarkType", // ensure that we don't confuse Vega's mark type (which includes unsupported marks like "arc") with Vega-lite's mark types
 
             "#/definitions/Type": "MeasureType", // `Type` is a reserved name in Swift
+            "#/definitions/Mark": "PrimitiveMarkType", // `Mark` is too generic a name for the enum
+
             "#/definitions/StandardType": "StandardMeasureType", // new in vl 3.0.0RC11
             "#/definitions/Data": "DataProvider", // `Data` conflicts with Swift's built-in Data type
 
