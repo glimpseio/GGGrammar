@@ -134,6 +134,7 @@ private extension GGSchemaGenerator {
     private func fixup(_ curio: inout Curio) {
         let renames = [
             //"#/definitions/Config": "ConfigTheme", // TODO
+            //"#/definitions/Transform": "DataTransformation", // TODO
 
             "#/definitions/MarkType": "VgMarkType", // ensure that we don't confuse Vega's mark type (which includes unsupported marks like "arc") with Vega-lite's mark types
 
