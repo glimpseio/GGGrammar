@@ -135,6 +135,7 @@ private extension GGSchemaGenerator {
         let renames = [
             "#/definitions/Config": "ConfigTheme",
             "#/definitions/Transform": "DataTransformation",
+            "#/definitions/Field": "SourceColumnRef",
 
             "#/definitions/MarkType": "VgMarkType", // ensure that we don't confuse Vega's mark type (which includes unsupported marks like "arc") with Vega-lite's mark types
 
@@ -440,14 +441,7 @@ private extension GGSchemaGenerator {
         ]
 
         curio.propertyTypeOverrides = [
-            // the default sort definition has "EncodingSortField" (which matches everything) before "SortByEncoding"
-            // "Sort": "OneOf5<SortArray, SortOrder, EncodingSortField, SortByEncoding, ExplicitNull>",
-            // since "Field" is optional, this will match any spec. This can be removed if the PR is merged:
-            // https://github.com/vega/vega-lite/pull/5001
-            "EncodingSortField.field": "Field",
-
             "ConfigTheme.font": "FontName",
-            
             "AreaConfig.font": "FontName",
             "BarConfig.font": "FontName",
             "LineConfig.font": "FontName",
@@ -564,7 +558,7 @@ private extension GGSchemaGenerator {
 
             "DataProvider": CodeExternalType("DataProvider"), // DataProvider = OneOf2<DataSource, Generator>
             "DataSource": CodeExternalType("DataSource"), // DataSource = OneOf3<UrlData, InlineData, NamedData>
-            "Field": CodeExternalType("Field"), // Field = OneOf2<FieldName, RepeatRef>
+            "SourceColumnRef": CodeExternalType("SourceColumnRef"), // SourceColumnRef = OneOf2<FieldName, RepeatRef>
             "Sort": CodeExternalType("Sort"), // Sort = Nullable<OneOf4<SortArray, AllSortString, EncodingSortField, SortByEncoding>>
 
             "FieldName": CodeExternalType("FieldName"), // FieldName = string
