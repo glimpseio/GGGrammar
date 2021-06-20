@@ -120,12 +120,7 @@ private extension GGSchemaGenerator {
 
         let schemas: [(String, JSONSchema)] = try JSONSchema.generate(json, rootName: nil)
 
-        // pre-process the schema to add more properties that are not defined by the vega-lite spec
-        let transformedSchema = schemas.map { name, schema in
-            (name, addUsermetaToTypes(in: name, schema: schema))
-        }
-
-        let module = try curio.assemble(transformedSchema, rootName: nil)
+        let module = try curio.assemble(schemas, rootName: nil)
         module.imports.append("struct Foundation.UUID") // for UUID
 
         return try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
@@ -133,12 +128,19 @@ private extension GGSchemaGenerator {
 
     private func fixup(_ curio: inout Curio) {
         let renames = [
+            "#/definitions/Data": "DataProvider", // `Data` conflicts with Swift's built-in Data type
+
+            "#/definitions/Axis": "AxisDef",
+            "#/definitions/Legend": "LegendDef",
+            "#/definitions/Scale": "ScaleDef",
+            "#/definitions/Header": "HeaderDef",
+
             "#/definitions/FacetedEncoding": "EncodingChannelMap",
             "#/definitions/Config": "ConfigTheme",
             "#/definitions/Transform": "DataTransformation",
             "#/definitions/Field": "SourceColumnRef",
 
-            "#/definitions/MarkType": "VgMarkType", // ensure that we don't confuse Vega's mark type (which includes unsupported marks like "arc") with Vega-lite's mark types
+            "#/definitions/MarkType": "VgMarkType",
 
             "#/definitions/Type": "MeasureType", // `Type` is a reserved name in Swift
             "#/definitions/Mark": "PrimitiveMarkType", // `Mark` is too generic a name for the enum
@@ -146,20 +148,20 @@ private extension GGSchemaGenerator {
             "#/definitions/ErrorBar": "ErrorBarLiteral",
             "#/definitions/ErrorBand": "ErrorBandLiteral",
 
-            "#/definitions/StandardType": "StandardMeasureType", // new in vl 3.0.0RC11
-            "#/definitions/Data": "DataProvider", // `Data` conflicts with Swift's built-in Data type
+            "#/definitions/StandardType": "StandardMeasureType",
 
-            "#/definitions/Binding": "BindControl", // conflicts with SwiftUI
-            "#/definitions/Text": "StringList", // conflicts with SwiftUI
-            "#/definitions/Color": "ColorCode", // conflicts with SwiftUI
-            "#/definitions/Gradient": "ColorGradient", // conflicts with SwiftUI
-            "#/definitions/LinearGradient": "ColorGradientLinear", // conflicts with SwiftUI
-            "#/definitions/RadialGradient": "ColorGradientRadial", // conflicts with SwiftUI
+            "#/definitions/Binding": "BindControl",
+            "#/definitions/Text": "StringList",
+
+            "#/definitions/Color": "ColorLiteral",
+            "#/definitions/Gradient": "ColorGradient",
+            "#/definitions/LinearGradient": "ColorGradientLinear",
+            "#/definitions/RadialGradient": "ColorGradientRadial",
 
             // work around an ambigious type bug in the generator (there are two ConditionalPredicateValueDefStringNullExpr types generated otherwise)
             "#/definitions/ConditionalPredicate<ValueDef<(string|null|ExprRef)>>": "ConditionalPredicateValueDefStringNullExprReference",
 
-            "#/definitions/TimeInterval": "Duration", // `TimeInterval` conflicts with the Foundation type
+            "#/definitions/TimeInterval": "TemporalUnit", // `TimeInterval` conflicts with the Foundation type
             //"#/definitions/Stream": "StreamChoice", // `Stream` conflicts with the Foundation type
 
         ]
@@ -457,16 +459,16 @@ private extension GGSchemaGenerator {
             "BaseMarkConfig.font": "FontName",
             "ExcludeMappedValueRefBaseTitle.font": "FontName",
             "ExcludeMappedValueRefBaseTitle.subtitleFont": "FontName",
-            "Axis.labelFont": "FontName",
-            "Axis.titleFont": "FontName",
+            "AxisDef.labelFont": "FontName",
+            "AxisDef.titleFont": "FontName",
             "AxisConfig.labelFont": "FontName",
             "AxisConfig.titleFont": "FontName",
-            "Header.labelFont": "FontName",
-            "Header.titleFont": "FontName",
+            "HeaderDef.labelFont": "FontName",
+            "HeaderDef.titleFont": "FontName",
             "HeaderConfig.labelFont": "FontName",
             "HeaderConfig.titleFont": "FontName",
-            "Legend.labelFont": "FontName",
-            "Legend.titleFont": "FontName",
+            "LegendDef.labelFont": "FontName",
+            "LegendDef.titleFont": "FontName",
             "LegendConfig.labelFont": "FontName",
             "LegendConfig.titleFont": "FontName",
             "TickConfig.font": "FontName",
@@ -492,11 +494,11 @@ private extension GGSchemaGenerator {
 
             "ExprRef.expr": "Expr", // was "string"
             "CalculateTransform.calculate": "Expr",
-            "Header.labelExpr": "Expr",
+            "HeaderDef.labelExpr": "Expr",
             "HeaderConfig.labelExpr": "Expr",
-            "Axis.labelExpr": "Expr",
+            "AxisDef.labelExpr": "Expr",
             "AxisConfig.labelExpr": "Expr",
-            "Legend.labelExpr": "Expr",
+            "LegendDef.labelExpr": "Expr",
             "LegendConfig.labelExpr": "Expr", // doesn't exist, but maybe eventually…
 
             "ConditionExprType.expr": "Expr",
@@ -553,7 +555,7 @@ private extension GGSchemaGenerator {
             "FontStyle": CodeExternalType("FontStyle"), // wrap the string in its own type
             "FontWeight": CodeExternalType("FontWeight"),
 
-            "ColorCode": CodeExternalType("ColorCode"), // ColorCode = OneOf3<ColorName, HexColor, String>
+            "ColorLiteral": CodeExternalType("ColorLiteral"), // ColorCode = OneOf3<ColorName, HexColor, String>
             "ColorGradient": CodeExternalType("ColorGradient"), // ColorGradient = OneOf2<LinearGradient, RadialGradient>
             "HexColor": CodeExternalType("HexColor"), // HexColor = String
 
@@ -595,40 +597,6 @@ private extension GGSchemaGenerator {
         ]
 
 
-    }
-
-    /// Hack to add in an arbitrary "usermeta" field to each of the transform types, which allows external systems to associate arbitrary data with a transform
-    func addUsermetaToTypes(in name: String, schema: JSONSchema) -> JSONSchema {
-        let transformTypes = [
-            "AggregateTransform",
-            "CalculateTransform",
-            "DensityTransform",
-            "FlattenTransform",
-            "FoldTransform",
-            "LoessTransform",
-            "LookupTransform",
-            "RegressionTransform",
-            "TimeUnitTransform",
-            "WindowTransform",
-            "QuantileTransform",
-            "JoinAggregateTransform",
-            "BinTransform",
-            "StackTransform",
-            "FilterTransform",
-            "ImputeTransform",
-            "PivotTransform",
-            "SampleTransform",
-        ]
-        .map({ "#/definitions/" + $0 }) // e.g., #/definitions/ImputeTransform
-
-        var schema = schema
-
-        if transformTypes.contains(name) {
-            print("injecting usermeta into transform schema:", name)
-            schema.properties.faulted["usermeta"] = .init(JSONSchema(ref: "#/definitions/Dict", type: .init(SimpleTypes.object)))
-        }
-
-        return schema
     }
 }
 #endif
