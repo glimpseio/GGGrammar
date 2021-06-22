@@ -30,15 +30,15 @@ final class GGSpecTests: XCTestCase {
         """
 
         // parse the GGSpec from the JSON literal…
-        let parsedSpec = try TopLevelUnitSpec.parseJSON(specJSON)
+        let parsedSpec = try GG.TopLevelUnitSpec.parseJSON(specJSON)
 
         // …and also create the same spec in code
-        var codeSpec = TopLevelUnitSpec(data:
-            TopLevelUnitSpec.DataChoice(
-                DataProvider(
-                    DataSource(
-                        InlineData(values:
-                                    InlineDataset([
+        var codeSpec = GG.TopLevelUnitSpec(data:
+                                            GG.TopLevelUnitSpec.DataChoice(
+                                                GG.DataProvider(
+                                                    GG.DataSource(
+                                                        GG.InlineData(values:
+                                                                        GG.InlineDataset([
                                         ["a": "CAT1", "b": 5.6],
                                         ["a": "CAT2", "b": 0.1]
                                     ])
@@ -46,18 +46,18 @@ final class GGSpecTests: XCTestCase {
                     )
                 )
             ),
-            mark: AnyMark(.bar))
+                                           mark: GG.AnyMark(.bar))
 
         // initialize the encodings with a single `x` scaled to the `a` field…
-        codeSpec.encoding = EncodingChannelMap(x:
-            EncodingChannelMap.XEncoding(
-                EncodingChannelMap.X(
-                    PositionFieldDef(field: .init(FieldName("a"))))))
+        codeSpec.encoding = GG.EncodingChannelMap(x:
+                                                    GG.EncodingChannelMap.XEncoding(
+                                                        GG.EncodingChannelMap.X(
+                                                            GG.PositionFieldDef(field: .init(GG.FieldName("a"))))))
 
         // …then add a `y` encoding scaled to the `b` field
-        codeSpec.encoding!.y = EncodingChannelMap.YEncoding(
-            EncodingChannelMap.Y(
-                PositionFieldDef(field: .init(FieldName("b")))))
+        codeSpec.encoding!.y = GG.EncodingChannelMap.YEncoding(
+            GG.EncodingChannelMap.Y(
+                GG.PositionFieldDef(field: .init(GG.FieldName("b")))))
 
         #if canImport(ObjectiveC) // *sigh* Apple
         let expectedJSON = """
