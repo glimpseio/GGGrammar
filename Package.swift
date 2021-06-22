@@ -4,22 +4,34 @@
 import PackageDescription
 
 let package = Package(
-    name: "GGSpec",
+    name: "GGGrammar",
     products: [
         .library(
-            name: "GGSpec",
-            targets: ["GGSpec"]),
+            name: "GGSchema",
+            targets: ["GGSchema"]),
+        .library(
+            name: "GGSources",
+            targets: ["GGSources"]),
+        .library(
+            name: "GGSamples",
+            targets: ["GGSamples"]),
     ],
     dependencies: [
         .package(url: "https://github.com/glimpseio/BricBrac.git", .branch("main")),
     ],
     targets: [
         .target(
-            name: "GGSpec",
+            name: "GGSchema",
             dependencies: ["BricBrac"]),
         .testTarget(
-            name: "GGSpecTests",
-            dependencies: ["GGSpec", .product(name: "Curio", package: "BricBrac")]),
+            name: "GGSchemaTests",
+            dependencies: ["GGSchema", .product(name: "Curio", package: "BricBrac")]),
+        .target(
+            name: "GGSamples",
+            resources: [.process("Resources/")]),
+        .target(
+            name: "GGSources",
+            resources: [.process("Resources/")]),
     ]
 )
 

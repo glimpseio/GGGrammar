@@ -1,13 +1,13 @@
 import XCTest
 import Curio
 import BricBrac
-import GGSpec
+import GGSchema
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking // needed for networking on Linux
 #endif
 
-final class GGSpecTests: XCTestCase {
+final class GGSchemaTests: XCTestCase {
     func testDecoding() {
         XCTAssertEqual(["XYZ"], try Bric.parse("[\"XYZ\"]"))
     }
@@ -29,7 +29,7 @@ final class GGSpecTests: XCTestCase {
         }
         """
 
-        // parse the GGSpec from the JSON literal…
+        // parse the GGSchema from the JSON literal…
         let parsedSpec = try GG.TopLevelUnitSpec.parseJSON(specJSON)
 
         // …and also create the same spec in code
@@ -82,11 +82,11 @@ final class GGSpecTests: XCTestCase {
 #if os(Linux) || os(macOS) // or any OS that can run an NSTask…
 
 let codeDir = URL(fileURLWithPath: #file)
-    .deletingLastPathComponent() // Tests/GGSpecTests/
+    .deletingLastPathComponent() // Tests/GGSchemaTests/
     .deletingLastPathComponent() // Tests/
     .deletingLastPathComponent() // .
     .appendingPathComponent("Sources") // Sources/
-    .appendingPathComponent("GGSpec") // Sources/GGSpec/
+    .appendingPathComponent("GGSchema") // Sources/GGSchema/
 
 final class GGSchemaGenerator: XCTestCase {
     static let rootName = "GGSchema"
