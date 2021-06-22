@@ -121,6 +121,7 @@ private extension GGSchemaGenerator {
 
         let module = try curio.assemble(schemas, rootName: nil)
         module.imports.append("struct Foundation.UUID") // for UUID
+        module.namespace = "GG" // wrap everything in a top-level "GG" namespace
 
         return try curio.emit(module, name: GGSchemaGenerator.rootName + ".swift", dir: codeDir.path, source: source)
     }
