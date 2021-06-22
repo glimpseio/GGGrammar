@@ -5,6 +5,7 @@ import struct Foundation.UUID
 public protocol GGType {
 }
 
+public enum GG {
 public typealias ColorDef = MarkPropDefGradientStringNull
 
 public typealias ConditionalAxisColor = ConditionalAxisPropertyColorNull
@@ -38374,4 +38375,5 @@ public struct WindowTransform : Identifiable, Pure, Equatable, Hashable, Codable
 
         public typealias CodingOwner = WindowTransform
     }
+}
 }
