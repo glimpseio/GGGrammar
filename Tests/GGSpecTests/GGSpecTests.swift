@@ -107,14 +107,13 @@ private extension GGSchemaGenerator {
         var curio = Curio()
         curio.registryTypeName = "GGSchema"
         curio.conformances = [.init(name: "GGType")]
-        curio.includeSchemaSourceVar = "GGSchema.schemaSource" // include the raw source string
+        // curio.includeSchemaSourceVar = "GGSchema.schemaSource" // include the raw source string
 
         curio.accessor = { _ in .`public` }
         curio.anyOfAsOneOf = true
         //curio.imports.append("struct Foundation.UUID") // for UUID
 
         curio.indirectCountThreshold = 80 // Config has about 62 fields
-
 
         fixup(&curio)
 
