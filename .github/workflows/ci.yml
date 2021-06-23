@@ -77,8 +77,10 @@ jobs:
     needs: [macOS10] # macOS10 must pass first
     steps:
       - uses: actions/checkout@v2
-      - name: Run tests
-        run: swift test
+      - name: Run Tests (Debug)
+        run: swift test -v --configuration debug
+      - name: Run Tests (Release)
+        run: swift test -v --configuration release -Xswiftc -enable-testing
 
   Windows10:
     runs-on: windows-latest
