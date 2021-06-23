@@ -3,6 +3,9 @@
 
 import PackageDescription
 
+// optimizing the GGSchema reduces the size of GGSchema.o from ~46M -> 
+let optimize = [SwiftSetting.unsafeFlags(["-cross-module-optimization", "-Osize"])]
+
 let package = Package(
     name: "GGGrammar",
     products: [
@@ -22,7 +25,8 @@ let package = Package(
     targets: [
         .target(
             name: "GGSchema",
-            dependencies: ["BricBrac"]),
+            dependencies: ["BricBrac"],
+            swiftSettings: optimize),
         .testTarget(
             name: "GGSchemaTests",
             dependencies: ["GGSchema", .product(name: "Curio", package: "BricBrac")]),
