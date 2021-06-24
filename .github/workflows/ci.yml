@@ -31,6 +31,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
             xcodebuild clean test \
+              -configuration Release \
               -scheme "xcodebuild clean test -scheme GGGrammar-Package" \
               -sdk "watchsimulator" \
               -destination "platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm" \
@@ -45,6 +46,7 @@ jobs:
       - run: |
             xcodebuild -showsdks
             xcodebuild clean test \
+              -configuration Release \
               -scheme "GGGrammar-Package" \
               -sdk "iphonesimulator" \
               -destination "platform=iOS Simulator,name=iPod touch (7th generation)" \
@@ -58,6 +60,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
             xcodebuild clean test \
+              -configuration Release \
               -scheme "GGGrammar-Package" \
               -sdk "appletvsimulator" \
               -destination "platform=tvOS Simulator,name=Apple TV" \
